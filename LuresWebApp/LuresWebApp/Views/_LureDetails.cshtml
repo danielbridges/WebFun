@@ -1,0 +1,22 @@
+﻿@model LuresWebApp.Models.LureDetails
+
+@functions {
+
+    private string ResizePhoto(WebImage photo)
+    {
+        //WebImage photo = WebImage.GetImageFromRequest("~/Content/Images/IMG_4930.JPG");
+        photo.Resize(200, 200).RotateRight();
+        //photo.RotateRight();
+        var base64string = Convert.ToBase64String(photo.GetBytes());
+        return base64string;
+    }
+
+}
+<div class="card card col-sm-3">
+    <div class="card-image">
+        <img class="thumbnail" src="@String.Format("data:image/jpg;base64,{0}", ResizePhoto(new WebImage(Model.ImageUrl)))"/>
+    </div>
+    <h4>How many you've caught: @Html.DisplayTextFor(m => m.Caught)</h4>
+    <h4>How many you got: @Html.DisplayTextFor(m => m.Inventory)</h4>
+</div>
+

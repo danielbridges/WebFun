@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@functions {
+    
+}
+
+@model IEnumerable<LuresWebApp.Models.LureDetails>
+
+@foreach (var lure in Model)
+{
+   Html.RenderPartial("~/Views/_LureDetails.cshtml", lure); 
+}
