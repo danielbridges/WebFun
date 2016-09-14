@@ -14,9 +14,15 @@
 }
 <div class="card card col-sm-3">
     <div class="card-image">
-        <img class="thumbnail" src="@String.Format("data:image/jpg;base64,{0}", ResizePhoto(new WebImage(Model.ImageUrl)))"/>
+        <img class="thumbnail" src="@string.Format("data:image/jpg;base64,{0}", ResizePhoto(new WebImage(Model.ImageUrl)))"/>
     </div>
-    <h4>How many you've caught: @Html.DisplayTextFor(m => m.Caught)</h4>
-    <h4>How many you got: @Html.DisplayTextFor(m => m.Inventory)</h4>
+    @*<h4>How many you've caught: @Html.EditorFor(model => model.Caught, null, string.Format("caught{0}", Model.Id))</h4>*@
+    <h4>How many you've caught: @Html.TextBoxFor(model => model.Caught,
+                               new Dictionary<string, object>() { { "id", "caught"+@Model.Id }, { "txtPlace", 3 }, { "class", "numberWide" }, {"type", "number"}, {"onclick", string.Format("addCaught({0})", @Model.Id)} })</h4>
+
+    
+    @*<button type="button" onclick="addCaught(@Model.Id)" style="display: block; margin: auto">Add</button>
+    <button type="button" onclick="lowerCaught(@Model.Id)" style="display: block; margin: auto">Remove</button>*@
+    <h4>How many you got: @Html.EditorFor(model => model.Inventory)</h4>
 </div>
 

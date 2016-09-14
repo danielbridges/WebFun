@@ -8,7 +8,31 @@
 
 @model IEnumerable<LuresWebApp.Models.LureDetails>
 
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.js")"></script>
+
 @foreach (var lure in Model)
 {
    Html.RenderPartial("~/Views/_LureDetails.cshtml", lure); 
 }
+
+<script>
+    $(document).ready(function () {
+    });
+
+    function addCaught(lureId) {
+        console.log($('#caught' + lureId).val());
+        var newCaughtValue = $('#caught' + lureId).val();
+
+        var parameters = { lureId: lureId, caught: newCaughtValue };
+        console.log("lureId passed to API: " + lureId);
+        var url = "/home/updateCaughtAmount/";
+        $.post(url, { lureId: lureId, caught: newCaughtValue })
+        .done(function () {
+            console.log("successful call to updateCaughtAmount");
+        })
+        .error(function (xhr, ajaxOptions, thrownError) {
+            console && console.log("request to " + url + " failed");
+        });
+
+    }
+</script>

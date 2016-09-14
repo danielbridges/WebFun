@@ -1,55 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace LuresWebApp.Controllers
+﻿namespace LuresWebApp.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+    using LuresWebLib;
     using Models;
 
     public class HomeController : Controller
     {
+        //https://gilesey.wordpress.com/2013/04/21/allowing-remote-access-to-your-iis-express-service
+
         public ActionResult Index()
         {
-        //https://gilesey.wordpress.com/2013/04/21/allowing-remote-access-to-your-iis-express-service
-            IEnumerable<LureDetails> lureDetails = new List<LureDetails>
+            var luresRepository = new LuresRepository();
+            var allLures = luresRepository.Get();
+            var lureDetails = allLures.Select(lure => new LureDetails
             {
-                new LureDetails
-                {
-                    Caught = 2,
-                    Inventory = 1,
-                    ImageUrl = @"~/content/images/img_4930.jpg"
-                },
-                new LureDetails
-                {
-                    Caught = 14,
-                    Inventory = 2,
-                    ImageUrl = @"~/content/images/img_4931.jpg"
-                },
-                new LureDetails
-                {
-                    Caught = 7,
-                    Inventory = 8,
-                    ImageUrl = @"~/content/images/img_4934.jpg"
-                },
-                new LureDetails
-                {
-                    Caught = 0,
-                    Inventory = 1,
-                    ImageUrl = @"~/content/images/img_4935.jpg"
-                },
-                new LureDetails
-                {
-                    Caught = 9,
-                    Inventory = 3,
-                    ImageUrl = @"~/content/images/img_4936.jpg"
-                },
-            };
-
-
+                Id = lure.Id, 
+                ImageUrl = lure.ImageUrl, Inventory = lure.Inventory, Caught = lure.Caught
+            }).ToList();
 
             return View(lureDetails);
+        }
+
+        [HttpPost]
+        public void UpdateCaughtAmount(int lureId, int caught)
+        {
+            var luresRepository = new LuresRepository();
+            luresRepository.UpdateCaught(lureId, caught);
         }
 
         public ActionResult About()
