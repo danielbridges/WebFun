@@ -77,5 +77,64 @@
         public LuresRepository() : base(@"//Lures.xml")
         {
         }
+
+        //void SaveImage(string pic)
+        //{
+        //    string query = "insert into Table (Photo) values (@pic);";
+        //    string conString = @" Data Source = \Program Files\Users.s3db ";
+        //    SQLiteConnection con = new SQLiteConnection(conString);
+        //    SQLiteCommand cmd = new SQLiteCommand(query, con);
+        //    cmd.Parameters.Add("@pic", DbType.String);
+        //    con.Open();
+        //    try
+        //    {
+        //        cmd.ExecuteNonQuery();
+        //    }
+        //    catch (Exception exc1)
+        //    {
+        //        MessageBox.Show(exc1.Message);
+        //    }
+        //    con.Close();
+        //}
+        //public void ImageToBase64(Image image, System.Drawing.Imaging.ImageFormat format)
+        //{
+        //    using (MemoryStream ms = new MemoryStream())
+        //    {
+        //        // Convert Image to byte[]
+        //        image.Save(ms, format);
+        //        byte[] imageBytes = ms.ToArray();
+
+        //        // Convert byte[] to Base64 String
+        //        string base64String = Convert.ToBase64String(imageBytes);
+        //        SaveImage(base64String);
+        //    }
+        //}
+
+        //string LoadImage()
+        //{
+        //    string query = "select Photo from Table;";
+        //    string conString = @" Data Source = \Program Files\Users.s3db ";
+        //    SQLiteConnection con = new SQLiteConnection(conString);
+        //    SQLiteCommand cmd = new SQLiteCommand(query, con);
+        //    string base64EncodedImage = null;
+        //    con.Open();
+        //    try
+        //    {
+        //        IDataReader reader = cmd.ExecuteReader();
+        //        reader.Read(); // advance the data reader to the first row
+        //        base64EncodedImage = (string)reader["Photo"];
+        //        reader.Close();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+        //    con.Close();
+        //    return base64EncodedImage;
+        //}
+
     }
+
 }
+
+

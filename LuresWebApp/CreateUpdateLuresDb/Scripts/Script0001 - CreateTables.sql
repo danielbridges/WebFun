@@ -1,0 +1,2 @@
+﻿CREATE TABLE IF NOT EXISTS Lures 
+	(Id INTEGER, ImageUrl TEXT, RawImage TEXT, Caught INTEGER, Inventory INTEGER) 
