@@ -1,18 +1,28 @@
 ﻿namespace LuresWebApp.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
     using LuresWebLib;
     using Models;
 
     public class HomeController : Controller
     {
-        //https://gilesey.wordpress.com/2013/04/21/allowing-remote-access-to-your-iis-express-service
+        private readonly LuresRepository luresRepository;
 
+        public HomeController(LuresRepository luresRepository)
+        {
+            this.luresRepository = luresRepository;
+        }
+
+        //https://gilesey.wordpress.com/2013/04/21/allowing-remote-access-to-your-iis-express-service
+        
         public ActionResult Index()
         {
-            var luresRepository = new LuresRepository();
+            Console.WriteLine(HttpRuntime.AppDomainAppPath);
+
             var allLures = luresRepository.Get();
             var lureDetails = allLures.Select(lure => new LureDetails
             {
@@ -26,7 +36,6 @@
         [HttpPost]
         public void UpdateCaughtAmount(int lureId, int caught)
         {
-            var luresRepository = new LuresRepository();
             luresRepository.UpdateCaught(lureId, caught);
         }
 

@@ -1,82 +1,76 @@
 ﻿namespace LuresWebLib
 {
+    using System;
     using System.Collections.Generic;
+    using System.Data.SQLite;
+    using System.Linq;
+    using Dapper;
     using Domain;
+    using Installers;
 
-    public class LuresRepository: BaseRepository<List<Lure>>
+    public class LuresRepository//: IRepository<Lure>
     {
-        //#region Mock Data to be replaced by calls to a data store
-        //private List<Lure> dummyTackleBox = new List<Lure>
-        //{
-        //    new Lure
-        //    {
-        //        Id = 1,
-        //        ImageUrl = @"~/content/images/img_4930.jpg",
-        //        Inventory = 0,
-        //        Caught = 0
-        //    },
-        //    new Lure
-        //    {
-        //        Id = 2,
-        //        ImageUrl = @"~/content/images/img_4931.jpg",
-        //        Inventory = 0,
-        //        Caught = 0
-        //    },
-        //    new Lure
-        //    {
-        //        Id = 3,
-        //        ImageUrl = @"~/content/images/img_4934.jpg",
-        //        Inventory = 0,
-        //        Caught = 0
-        //    },
-        //    new Lure
-        //    {
-        //        Id = 4,
-        //        ImageUrl = @"~/content/images/img_4935.jpg",
-        //        Inventory = 0,
-        //        Caught = 0
-        //    },
-        //    new Lure
-        //    {
-        //        Id = 5,
-        //        ImageUrl = @"~/content/images/img_4936.jpg",
-        //        Inventory = 0,
-        //        Caught = 0
-        //    },
-        //};
-        //#endregion
+        private readonly string connectionString;
+        private const string SelectLures = "SELECT Id, ImageUrl, RawImage, Caught, Inventory FROM Lures";
+        private const string UpdateLures = "UPDATE Lures Set Caught =  @Caught, Inventory = @Inventory WHERE Id = @Id";
 
-        private List<Lure> TackleBox
+        public LuresRepository(IConnectionStringFactory connectionStringFactory)
         {
-            get { return Get(); }
-        } 
+            this.connectionString = connectionStringFactory.GetConnectionString("LuresConnectionString");
+        }
+
+        //public LuresRepository() : base(@"//Lures.xml")
+        //{
+        //}
+
         public Lure Get(int lureId)
         {
-            return TackleBox.Find(lure => lure.Id == lureId);
+            return Get().ToList().Find(lure => lure.Id == lureId);
         }
 
-        public List<Lure> Get()
+        public IEnumerable<Lure> Get()
         {
-            return Load();
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                var result = connection.Query<Lure>(SelectLures);
+                connection.Close();
+                return result;
+            }
         }
 
-        public int UpdateCaught(int lureId, int incrementValue)
+        public void UpdateCaught(int lureId, int incrementValue)
         {
-            var result = TackleBox.Find(lure => lure.Id == lureId);
+            var result = Get(lureId);
             result.Caught = incrementValue;
-            Save(TackleBox);
-            return result.Caught;
-        }
-        public int UpdateInventory(int lureId, int incrementValue)
-        {
-            var result = TackleBox.Find(lure => lure.Id == lureId);
-            result.Inventory += incrementValue;
-            return result.Inventory;
+
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Query<Lure>(UpdateLures,
+                    new
+                    {
+                        Caught = incrementValue,
+                        Inventory = result.Inventory,
+                        Id = result.Id
+                    });
+            }
         }
 
-        public LuresRepository() : base(@"//Lures.xml")
+        public void UpdateInventory(int lureId, int incrementValue)
         {
+            var result = Get(lureId);
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Query<Lure>(UpdateLures,
+                    new
+                    {
+                        Caught = result.Caught,
+                        Inventory = incrementValue,
+                        Id = result.Id
+                    });
+            }
         }
+
 
         //void SaveImage(string pic)
         //{
@@ -136,5 +130,47 @@
     }
 
 }
+
+
+//#region Mock Data to be replaced by calls to a data store
+//private List<Lure> dummyTackleBox = new List<Lure>
+//{
+//    new Lure
+//    {
+//        Id = 1,
+//        ImageUrl = @"~/content/images/img_4930.jpg",
+//        Inventory = 0,
+//        Caught = 0
+//    },
+//    new Lure
+//    {
+//        Id = 2,
+//        ImageUrl = @"~/content/images/img_4931.jpg",
+//        Inventory = 0,
+//        Caught = 0
+//    },
+//    new Lure
+//    {
+//        Id = 3,
+//        ImageUrl = @"~/content/images/img_4934.jpg",
+//        Inventory = 0,
+//        Caught = 0
+//    },
+//    new Lure
+//    {
+//        Id = 4,
+//        ImageUrl = @"~/content/images/img_4935.jpg",
+//        Inventory = 0,
+//        Caught = 0
+//    },
+//    new Lure
+//    {
+//        Id = 5,
+//        ImageUrl = @"~/content/images/img_4936.jpg",
+//        Inventory = 0,
+//        Caught = 0
+//    },
+//};
+//#endregion
 
 

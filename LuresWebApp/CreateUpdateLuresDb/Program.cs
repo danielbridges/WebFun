@@ -12,9 +12,9 @@
     {
         static int Main(string[] args)
         {
-            Directory.CreateDirectory("../../../data");
-            SQLiteConnection.CreateFile("../../../data/lures.db");
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=../../../data/lures.db"))
+            Directory.CreateDirectory("../../../../LuresWebApp/App_Data");
+            SQLiteConnection.CreateFile("../../../../LuresWebApp/App_Data/lures.db");
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=../../../../LuresWebApp/App_Data/lures.db"))
             {
                 conn.Open();
                 try
