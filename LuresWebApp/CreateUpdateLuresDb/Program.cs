@@ -3,18 +3,22 @@
     using System;
     using System.Data.SQLite;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
 
     using DbUp;
 
-    class Program
+    public class Program
     {
-        static int Main(string[] args)
+        private static int Main()
         {
-            Directory.CreateDirectory("../../../../LuresWebApp/App_Data");
-            SQLiteConnection.CreateFile("../../../../LuresWebApp/App_Data/lures.db");
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=../../../../LuresWebApp/App_Data/lures.db"))
+#if WIN64
+            const string appDataPath = "../../../../LuresWebApp/App_Data";
+#else
+            const string appDataPath = "../../../LuresWebApp/App_Data";
+#endif
+            Directory.CreateDirectory(appDataPath);
+            SQLiteConnection.CreateFile($"{appDataPath}/lures.db");
+            using (var conn = new SQLiteConnection($"Data Source={appDataPath}/lures.db"))
             {
                 conn.Open();
                 try

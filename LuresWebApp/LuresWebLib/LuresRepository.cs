@@ -1,6 +1,5 @@
 ﻿namespace LuresWebLib
 {
-    using System;
     using System.Collections.Generic;
     using System.Data.SQLite;
     using System.Linq;
@@ -16,7 +15,7 @@
 
         public LuresRepository(IConnectionStringFactory connectionStringFactory)
         {
-            this.connectionString = connectionStringFactory.GetConnectionString("LuresConnectionString");
+            connectionString = connectionStringFactory.GetConnectionString("LuresConnectionString");
         }
 
         //public LuresRepository() : base(@"//Lures.xml")
@@ -50,8 +49,8 @@
                     new
                     {
                         Caught = incrementValue,
-                        Inventory = result.Inventory,
-                        Id = result.Id
+                        result.Inventory,
+                        result.Id
                     });
             }
         }
@@ -64,9 +63,9 @@
                 connection.Query<Lure>(UpdateLures,
                     new
                     {
-                        Caught = result.Caught,
+                        result.Caught,
                         Inventory = incrementValue,
-                        Id = result.Id
+                        result.Id
                     });
             }
         }

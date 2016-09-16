@@ -23,12 +23,26 @@
         console.log($('#caught' + lureId).val());
         var newCaughtValue = $('#caught' + lureId).val();
 
-        var parameters = { lureId: lureId, caught: newCaughtValue };
         console.log("lureId passed to API: " + lureId);
         var url = "/home/updateCaughtAmount/";
         $.post(url, { lureId: lureId, caught: newCaughtValue })
         .done(function () {
             console.log("successful call to updateCaughtAmount");
+        })
+        .error(function (xhr, ajaxOptions, thrownError) {
+            console && console.log("request to " + url + " failed");
+        });
+
+    }
+    function addInventory(lureId) {
+        console.log($('#inventory' + lureId).val());
+        var newInventoryValue = $('#inventory' + lureId).val();
+
+        console.log("lureId passed to API: " + lureId);
+        var url = "/home/updateInventoryAmount/";
+        $.post(url, { lureId: lureId, inventory: newInventoryValue })
+        .done(function () {
+            console.log("successful call to updateInventoryAmount");
         })
         .error(function (xhr, ajaxOptions, thrownError) {
             console && console.log("request to " + url + " failed");

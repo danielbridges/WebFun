@@ -1,7 +1,6 @@
 ﻿namespace LuresWebApp.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -37,6 +36,12 @@
         public void UpdateCaughtAmount(int lureId, int caught)
         {
             luresRepository.UpdateCaught(lureId, caught);
+        }
+
+        [HttpPost]
+        public void UpdateInventoryAmount(int lureId, int inventory)
+        {
+            luresRepository.UpdateInventory(lureId, inventory);
         }
 
         public ActionResult About()
