@@ -2,22 +2,40 @@
     ViewBag.Title = "Home Page";
 }
 
+<button id="AddNewLure" onclick="addNewLure()">New</button>
 @functions {
     
 }
 
 @model IEnumerable<LuresWebApp.Models.LureDetails>
 
-<script src="@Url.Content("~/Scripts/jquery-1.10.2.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery-3.1.0.js")"></script>
 
 @foreach (var lure in Model)
 {
    Html.RenderPartial("~/Views/_LureDetails.cshtml", lure); 
 }
 
+<script type="text/javascript">
+    ShowModelPopUp = function (url) {
+        window.showModalDialog(url, "WindowPopup", 'width=400px,height=400px');
+    }
+    //http://www.c-sharpcorner.com/UploadFile/krishnasarala/popup-windows-in-Asp-Net-mvc/
+</script>
 <script>
     $(document).ready(function () {
     });
+
+    function addNewLure(){
+        console.log("adding new lure");
+
+        var url = "/home/Create/";
+        ShowModelPopUp(url);
+        $.get(url, function () {
+            console.log("successful call to create a lure");
+        });
+
+    }
 
     function addCaught(lureId) {
         console.log($('#caught' + lureId).val());
@@ -26,12 +44,12 @@
         console.log("lureId passed to API: " + lureId);
         var url = "/home/updateCaughtAmount/";
         $.post(url, { lureId: lureId, caught: newCaughtValue })
-        .done(function () {
-            console.log("successful call to updateCaughtAmount");
-        })
-        .error(function (xhr, ajaxOptions, thrownError) {
-            console && console.log("request to " + url + " failed");
-        });
+            .done(function () {
+                console.log("successful call to updateCaughtAmount");
+            })
+            .error(function (xhr, ajaxOptions, thrownError) {
+                console && console.log("request to " + url + " failed");
+            });
 
     }
     function addInventory(lureId) {
@@ -41,12 +59,12 @@
         console.log("lureId passed to API: " + lureId);
         var url = "/home/updateInventoryAmount/";
         $.post(url, { lureId: lureId, inventory: newInventoryValue })
-        .done(function () {
-            console.log("successful call to updateInventoryAmount");
-        })
-        .error(function (xhr, ajaxOptions, thrownError) {
-            console && console.log("request to " + url + " failed");
-        });
+            .done(function () {
+                console.log("successful call to updateInventoryAmount");
+            })
+            .error(function (xhr, ajaxOptions, thrownError) {
+                console && console.log("request to " + url + " failed");
+            });
 
     }
 </script>

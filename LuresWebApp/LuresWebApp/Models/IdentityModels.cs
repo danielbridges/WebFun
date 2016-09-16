@@ -29,5 +29,7 @@ namespace LuresWebApp.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<LuresWebApp.Models.LureDetails> LureDetails { get; set; }
     }
 }

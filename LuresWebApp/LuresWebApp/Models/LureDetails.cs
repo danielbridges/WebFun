@@ -6,5 +6,6 @@
         public string ImageUrl { get; set; }
         public int Inventory { get; set; }
         public int Caught { get; set; }
+        public string Description { get; set; }
     }
 }

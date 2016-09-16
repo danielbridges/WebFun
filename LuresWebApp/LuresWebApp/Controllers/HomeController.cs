@@ -44,6 +44,16 @@
             luresRepository.UpdateInventory(lureId, inventory);
         }
 
+        public ActionResult Create()
+        {
+            int maxLureId = luresRepository.Get().ToList().Max(x => x.Id);
+            var newLureDetails = new LureDetails
+            {
+                Id = maxLureId + 1
+            };
+            return View(newLureDetails);
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
